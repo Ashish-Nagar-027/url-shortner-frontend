@@ -1,10 +1,10 @@
-
+import HomeCard from "@/modules/shortner/components/shortner";
 
 
 export default function Home() {
   return (
       <main className="bg-background">
-        <h1> This is Url Shortner</h1>
+        <HomeCard />
       </main>
   );
 }

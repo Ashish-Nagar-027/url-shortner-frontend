@@ -16,16 +16,15 @@ import z from "zod";
 import { shortUrlsFunctions } from "../Helpers/ShortUrls";
 
 export interface shortUrlType {
-    fullUrl: string,
-    originalUrl: string,
-    createdAt: string,
-    updatedAt: string,
+  fullUrl: string;
+  originalUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
-
 
 function HomeCard() {
   const [longUrl, setLongUrl] = useState("");
-  const [shortUrl, setShortUrl] = useState< shortUrlType| null>(null);
+  const [shortUrl, setShortUrl] = useState<shortUrlType | null>(null);
 
   const generateShortUrl = async () => {
     if (!longUrl) {
@@ -38,7 +37,7 @@ function HomeCard() {
       return;
     }
 
-    const res = await fetch("http://localhost:8080/create", {
+    const res = await fetch("http://localhost:8080/api/v1/url/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,15 +51,10 @@ function HomeCard() {
     setShortUrl(data);
   };
 
-  console.log("shortUrl",shortUrl);
+  console.log("shortUrl", shortUrl);
 
   return (
     <main className="p-6">
-      <header className="py-4 px-6 border mb-2 rounded-xl flex justify-between items-center">
-        <span className="font-extrabold text-2xl">iLynk</span>
-        <ToggleTheme />
-      </header>
-
       {/* Url shortner card */}
       <Card className="max-w-3/4 mx-auto mt-6">
         <CardHeader>
@@ -68,7 +62,6 @@ function HomeCard() {
           <CardDescription>No credit card required</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4 ">
-
           {/* short url form */}
           <div className="flex flex-col gap-4 ">
             <Label htmlFor="email" className="text-xl">
@@ -91,17 +84,28 @@ function HomeCard() {
             </Button>
           </div>
           <div>
-           {
-           shortUrl?.fullUrl && <div className="border p-4 text-lg rounded-xl flex flex-col gap-4">
-            <div className="text-xl ">Your Short Link : </div>
-            <span>{shortUrl?.fullUrl }</span>
-            <div className="flex gap-2">
-                  <Button size={'sm'} className="cursor-pointer"  onClick={() => shortUrlsFunctions(shortUrl, 'copy')}>Copy</Button>
-                  <Button size={'sm'} className="cursor-pointer" onClick={() => shortUrlsFunctions(shortUrl, 'visit')}>Visit Short url</Button>
-            </div>
-            </div>
-
-}
+            {shortUrl?.fullUrl && (
+              <div className="border p-4 text-lg rounded-xl flex flex-col gap-4">
+                <div className="text-xl ">Your Short Link : </div>
+                <span>{shortUrl?.fullUrl}</span>
+                <div className="flex gap-2">
+                  <Button
+                    size={"sm"}
+                    className="cursor-pointer"
+                    onClick={() => shortUrlsFunctions(shortUrl, "copy")}
+                  >
+                    Copy
+                  </Button>
+                  <Button
+                    size={"sm"}
+                    className="cursor-pointer"
+                    onClick={() => shortUrlsFunctions(shortUrl, "visit")}
+                  >
+                    Visit Short url
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

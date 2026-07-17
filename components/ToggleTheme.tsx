@@ -1,19 +1,18 @@
-"use client";
-import { useTheme } from "next-themes";
-import { Button } from "./ui/button";
 
-const ToggleTheme = () => {
+
+"use client";
+
+import { useTheme } from "@wrksz/themes/client";
+
+export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    return resolvedTheme === "dark" ? setTheme("light") : setTheme("dark");
-  };
-
   return (
-    <div>
-      <Button onClick={toggleTheme}>Toggle</Button>
-    </div>
+    <button
+      type="button"
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+    >
+      Toggle theme
+    </button>
   );
-};
-
-export default ToggleTheme;
+}

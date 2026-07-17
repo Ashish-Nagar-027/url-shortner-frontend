@@ -26,7 +26,6 @@ export default function Signin() {
   const [formData, setFormData] = useState(defaultFormValues);
   const [showPassword, setShowPassword] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const router = useRouter();
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
@@ -51,6 +50,7 @@ export default function Signin() {
     try {
       const res = await fetch("http://localhost:8080/api/v1/auth/login", {
         method: "POST",
+         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -66,7 +66,7 @@ export default function Signin() {
       toast.success("Logged in successfully!");
 
       const data = resData?.data;
-      console.log(data);
+
       if (data?.user) {
         const userData = JSON.stringify(data.user);
         localStorage.setItem("i_user", userData);
@@ -80,7 +80,8 @@ export default function Signin() {
 
       //   setFormData(defaultFormValues);
       setErrMessage("");
-      router.push("/");
+      window.location.href = "/"
+
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrMessage(error.message);

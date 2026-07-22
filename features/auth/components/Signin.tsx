@@ -8,6 +8,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
 import { useRouter } from "next/navigation";
+import { api } from "@/services/api";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -48,18 +49,14 @@ export default function Signin() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/v1/auth/login", {
-        method: "POST",
-         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await api.post("http://localhost:8080/api/v1/auth/login", {
+
         body: JSON.stringify(parsed.data),
       });
 
-      const resData = await res.json();
+     const resData = res.data.data;
 
-      if (!res.ok) {
+      if (!resData) {
         throw new Error(resData?.message || "Login failed");
       }
 

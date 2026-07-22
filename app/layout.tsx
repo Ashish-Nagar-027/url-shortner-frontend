@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@wrksz/themes/next";
 import Header from "@/components/Header";
-import { Toaster } from "@/components/ui/sonner"
+import Providers from "@/providers/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,13 +32,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>
-            <Header />
-            {children}
-            
-               <Toaster />
-            </ThemeProvider>
-            </body>
+      <ThemeProvider>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
+      </ThemeProvider>
+      </body>
     </html>
   );
 }

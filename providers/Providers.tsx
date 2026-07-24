@@ -5,7 +5,14 @@ import { useState } from "react";
 import { Toaster } from "sonner";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 2,
+        staleTime: 60 * 1000
+      }
+    }
+  }));
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,4 +1,4 @@
-import HomeCard from "@/modules/shortner/components/shortner";
+import HomeCard from "@/features/shortner/components/shortner";
 
 
 export default function Home() {

@@ -6,17 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import z from "zod";
-import { useRouter } from "next/navigation";
-import { api } from "@/services/api";
+import { loginSchema } from "../validation/auth.schema";
+import { authApi } from "../api/auth.api";
+import { AxiosError } from "axios";
 
-const loginSchema = z.object({
-  email: z.email(),
-  password: z
-    .string()
-    .min(5, "Password should have at least 5 characters")
-    .max(128, "Password must be under 128 characters"),
-});
+
 
 const defaultFormValues = {
   email: "",
@@ -49,20 +43,19 @@ export default function Signin() {
     }
 
     try {
-      const res = await api.post("http://localhost:8080/api/v1/auth/login", {
 
-        body: JSON.stringify(parsed.data),
-      });
 
-     const resData = res.data.data;
+      const res = await authApi.login(parsed.data)
+
+     const resData = res.data;
 
       if (!resData) {
-        throw new Error(resData?.message || "Login failed");
+        throw new Error(res?.message || "Login failed");
       }
 
       toast.success("Logged in successfully!");
 
-      const data = resData?.data;
+      const data = res?.data;
 
       if (data?.user) {
         const userData = JSON.stringify(data.user);
@@ -76,17 +69,18 @@ export default function Signin() {
       }
 
       //   setFormData(defaultFormValues);
+      toast.success('Login Succesfull')
       setErrMessage("");
-      window.location.href = "/"
+      window.location.href = "/dashboard"
 
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        setErrMessage(error.message);
+      let message = "Something went wrong"
+      if (error instanceof AxiosError) {
+       message =  error?.response?.data.message
         toast.error(error.message);
-      } else {
-        setErrMessage("Something went wrong");
-        toast.error("Something went wrong");
-      }
+      } 
+      setErrMessage(message);
+      toast.error(message);
     }
   };
 

@@ -9,14 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import Signup from "@/modules/auth/Signup";
+import Signup from "@/features/auth/components/Signup";
 
 const Register = () => {
   return (
     <div className="flex items-center justify-center   my-auto ">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Create Account</CardTitle>
+          <CardTitle>Sign Up</CardTitle>
           <CardDescription>
             Enter your name, email, password and confirm password below to
             create to your account

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Link from "next/link"
-import Signin from "@/modules/auth/Signin"
+import Signin from "@/features/auth/components/Signin"
 
 
 
@@ -25,8 +25,8 @@ const Register = () => {
           Enter your email, password  below to log in your account
         </CardDescription>
         <CardAction>
-          <Link href={'/sign-in'}>
-          <Button variant="link">Sign In</Button>
+          <Link href={'/sign-up'}>
+          <Button variant="link">Register</Button>
           </Link>
         </CardAction>
       </CardHeader>

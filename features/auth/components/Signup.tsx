@@ -5,25 +5,11 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import z from "zod";
 import { toast } from "sonner";
+import { registerSchema } from "../validation/auth.schema";
+import { authApi } from "../api/auth.api";
 
-const registerSchema = z
-  .object({
-    name: z
-      .string()
-      .min(3, "Name Should at least have 3 chars")
-      .max(50, "Name must be under 50 chars"),
-    email: z.email(),
-    password: z
-      .string()
-      .min(5, "Password Should at least have 5 chars")
-      .max(128, "Password must be under 128 chars"),
-    confirmPassword: z.string().min(5, "Password Should at least have 5 chars"),
-  })
-  .refine((d) => d.password == d.confirmPassword, {
-    error: "Passwords and confirms password must match",
-  });
+
 
 const defaultFormValues = {
   name: "",
@@ -51,15 +37,16 @@ export default function Signup() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:8080/api/v1/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(parse.data),
-      });
+      // const res = await fetch("http://localhost:8080/api/v1/auth/register", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(parse.data),
+      // });
+      const res = await authApi.register(parse.data)
 
-      const data = await res.json();
+      const data = await res.data
       if (!res.ok) {
         const message = data?.message || "Something Went Wrong";
         throw new Error(message);

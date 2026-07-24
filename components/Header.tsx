@@ -74,8 +74,13 @@ const Header = () => {
           </>
         ) : (
           <>
-          <span>{userData?.name}</span>
+
+           <Link
+              className="hover:underline hover:text-blue-600"
+              href="/dashboard"
+            >{userData?.name}</Link>
           <Button onClick={handleLogout}>Logout</Button>
+
           </>
         )}
         <ToggleTheme />

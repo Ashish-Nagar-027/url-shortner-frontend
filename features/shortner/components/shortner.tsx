@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import z from "zod";
 import { shortUrlsFunctions } from "../Helpers/ShortUrls";
+import Header from "@/components/Header";
 
 export interface shortUrlType {
   fullUrl: string;
@@ -55,6 +56,8 @@ function HomeCard() {
 
   return (
     <main className="p-6">
+      <Header />
+
       {/* Url shortner card */}
       <Card className="max-w-3/4 mx-auto mt-6">
         <CardHeader>

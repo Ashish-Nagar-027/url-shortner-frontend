@@ -3,10 +3,13 @@ import { useUserData } from "@/hooks/useUserData";
 import { redirect } from "next/navigation";
 import Appsidebar from "@/components/AppSidebar";
 import useRoutes from "@/hooks/useRoutes";
+import ToggleTheme from "@/components/ToggleTheme";
+import { useTheme } from "@wrksz/themes/client";
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const { isLoading, isError } = useUserData();
       const { getCurrentPathInfo}= useRoutes()
+        const { resolvedTheme } = useTheme();
 
       const currentPath = getCurrentPathInfo()
 
@@ -25,9 +28,10 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex ">
       <Appsidebar />
-      <main className="text-white flex-2">
-        <div className="h-18 flex items-center px-6 border-b-2 my-2">
+      <main className={` flex-2 ${resolvedTheme === "dark" ? "text-white": "text-black"}`}>
+        <div className="h-18 flex items-center px-6 border-b-2 my-2 justify-between">
           <span className="text-2xl">{currentPath && currentPath?.title}</span>
+          <ToggleTheme />
         </div>
         <div className="p-6">
         {children}

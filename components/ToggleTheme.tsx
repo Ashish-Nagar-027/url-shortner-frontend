@@ -3,16 +3,18 @@
 "use client";
 
 import { useTheme } from "@wrksz/themes/client";
+import { Moon, Sun } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
 
-  return (
-    <button
-      type="button"
+  return ( 
+    <Button
+      className="cursor-pointer"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
     >
-      Toggle theme
-    </button>
+   {  resolvedTheme === "dark" ?  <Sun /> : <Moon />}
+    </Button>
   );
 }

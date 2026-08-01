@@ -1,19 +1,15 @@
-import { api } from "@/services/api"
 import { useQuery } from "@tanstack/react-query"
 import { AxiosError } from "axios"
-import { usePathname,  } from "next/navigation"
 import { toast } from "sonner"
+import { authApi } from "@/features/auth/api/auth.api"
+import { isCurrentPublicRoute } from "@/lib/utils"
 
 
 export const useUserData  = () => {
-    const path = usePathname()
     return useQuery({
         queryKey: ['currentUser'],
         
-        queryFn: async () => {
-           const res = await api.get('/user/me')
-           return res?.data?.data
-        },
+        queryFn: authApi.currentUser,
         staleTime: 5 * 60 * 1000,
          gcTime: 10 * 60 * 1000,
          refetchOnMount: false,
@@ -21,8 +17,7 @@ export const useUserData  = () => {
             console.log('err ',count,"==" , err)
             if(err instanceof AxiosError ) {
               if(err.response?.status === 401){
-                const paths = ['/', "/sign-in", "/sign-up"]
-                if(!paths.includes(path)){
+                if(isCurrentPublicRoute()){
                     toast.error('Unauthorized ! Please login')
                 }
                 return false

@@ -47,7 +47,7 @@ export default function Signin() {
 
       const res = await authApi.login(parsed.data)
 
-     const resData = res.data;
+     const resData = res?.data;
 
       if (!resData) {
         throw new Error(res?.message || "Login failed");
@@ -55,20 +55,7 @@ export default function Signin() {
 
       toast.success("Logged in successfully!");
 
-      const data = res?.data;
-
-      if (data?.user) {
-        const userData = JSON.stringify(data.user);
-        localStorage.setItem("i_user", userData);
-      }
-      if (data?.token?.accessToken) {
-        localStorage.setItem("i_accessToken", data?.token?.accessToken);
-      }
-      if (data?.token?.refreshToken) {
-        localStorage.setItem("i_refreshToken", data?.token?.refreshToken);
-      }
-
-      //   setFormData(defaultFormValues);
+      setFormData(defaultFormValues);
       toast.success('Login Succesfull')
       setErrMessage("");
       window.location.href = "/dashboard"

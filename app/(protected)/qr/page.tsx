@@ -1,0 +1,5 @@
+
+
+export default function page() {
+    return <h1>This Feature will be added soon</h1>
+}

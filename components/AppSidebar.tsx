@@ -8,22 +8,27 @@ import {
   SidebarProvider,
   SidebarGroupLabel,
   SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import useRoutes from "@/hooks/useRoutes";
-
-
+import { LogOut } from "lucide-react";
+import useLogout from "@/features/auth/hooks/useLogout";
 
 const Appsidebar = () => {
-
-    const {ROUTES_INFO, isCurrentPath}= useRoutes()
+  const { ROUTES_INFO, isCurrentPath } = useRoutes();
+  const { logout } = useLogout()
 
   return (
     <SidebarProvider className="w-fit" open={true}>
       <Sidebar className=" ">
         <SidebarHeader className="py-4 m-2 mx-4  ">
           <div className="flex items-center justify-between">
-            <Link href={'/'} className="text-2xl font-bold ">Iynk</Link>
+            <Link href={"/"} className="text-2xl font-bold ">
+              iLynk
+            </Link>
             <SidebarTrigger />
           </div>
         </SidebarHeader>
@@ -50,7 +55,15 @@ const Appsidebar = () => {
           </SidebarGroup>
         </SidebarContent>
         <SidebarGroupContent></SidebarGroupContent>
-        <SidebarFooter />
+        <SidebarFooter className="w-full flex items-center">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={logout} className="w-5/6 mx-auto text-lg p-5 text-center bg-blue-950 cursor-pointer">
+                <LogOut size={22} className="font-extrabold text-xl" /> Logout
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
       </Sidebar>
     </SidebarProvider>
   );

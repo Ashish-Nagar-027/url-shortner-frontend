@@ -1,6 +1,5 @@
 "use client";
 
-import ToggleTheme from "@/components/ToggleTheme";
 import {
   Card,
   CardContent,
@@ -15,9 +14,10 @@ import { useState } from "react";
 import z from "zod";
 import { shortUrlsFunctions } from "../Helpers/ShortUrls";
 import Header from "@/components/Header";
+import useUrlApi from "@/features/links/hooks/useUrlApi";
 
 export interface shortUrlType {
-  fullUrl: string;
+  shortUrl: string;
   originalUrl: string;
   createdAt: string;
   updatedAt: string;
@@ -26,6 +26,7 @@ export interface shortUrlType {
 function HomeCard() {
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState<shortUrlType | null>(null);
+  const { createUrlMutation } = useUrlApi();
 
   const generateShortUrl = async () => {
     if (!longUrl) {
@@ -38,21 +39,18 @@ function HomeCard() {
       return;
     }
 
-    const res = await fetch("http://localhost:8080/api/v1/url/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        originalUrl: validateUrl.data,
-      }),
-    });
 
-    const data = await res.json();
-    setShortUrl(data);
+
+    createUrlMutation.mutate({originalUrl: validateUrl.data}, {
+    onSuccess:  (res) => {
+    setShortUrl(res);
+    setLongUrl("")
+    },
+  });
+
+
   };
 
-  console.log("shortUrl", shortUrl);
 
   return (
     <main className="p-6">
@@ -87,10 +85,10 @@ function HomeCard() {
             </Button>
           </div>
           <div>
-            {shortUrl?.fullUrl && (
+            {shortUrl?.shortUrl && (
               <div className="border p-4 text-lg rounded-xl flex flex-col gap-4">
                 <div className="text-xl ">Your Short Link : </div>
-                <span>{shortUrl?.fullUrl}</span>
+                <span>{shortUrl?.shortUrl}</span>
                 <div className="flex gap-2">
                   <Button
                     size={"sm"}

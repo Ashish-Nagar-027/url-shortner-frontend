@@ -1,23 +1,31 @@
-import React from 'react'
+import React, { useState } from "react";
 import useCopyText from "../hooks/useCopyText";
 import useUrlApi from "../hooks/useUrlApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, Copy, Pencil, Trash2 } from "lucide-react";
+import { Check, Copy, Pencil, QrCode, Trash2 } from "lucide-react";
 import Link from "next/link";
-import type { FormValues } from './LnkPopup';
-import type { linkType } from '../types';
-import { formateDate } from '../utils';
+import type { FormValues } from "./LnkPopup";
+import type { linkType } from "../types";
+import { formateDate } from "../utils";
+import QrCodeC from "./QrPopup";
 
-function LinksTable({ setUpdateUrl} : { setUpdateUrl: React.Dispatch<React.SetStateAction<Partial<FormValues> | null>>}) {
-  const { currentUserUrls , deleteMutation} = useUrlApi();
+function LinksTable({
+  setUpdateUrl,
+}: {
+  setUpdateUrl: React.Dispatch<
+    React.SetStateAction<Partial<FormValues> | null>
+  >;
+}) {
+  const { currentUserUrls, deleteMutation } = useUrlApi();
+  const [QrLink, setQrLink] = useState("")
   const { isLoading, isError, data } = currentUserUrls;
 
-const { handleCopy, copiedId } = useCopyText();
+  const { handleCopy, copiedId } = useCopyText();
 
   const handleDeleteUrl = (id: string) => {
-    deleteMutation.mutate(id)
-  }
+    deleteMutation.mutate(id);
+  };
 
   return (
     <div>
@@ -38,7 +46,7 @@ const { handleCopy, copiedId } = useCopyText();
                 Action
               </div>
 
-              {data?.data?.map((link: linkType, index:number) => {
+              {data?.data?.map((link: linkType, index: number) => {
                 return (
                   <React.Fragment key={link?.id || index}>
                     <div className="border p-2 text-center">{index + 1}</div>
@@ -66,7 +74,8 @@ const { handleCopy, copiedId } = useCopyText();
                         </div>
                       </div>
                     </div>
-                    <div className=" border p-2 text-center flex flex-wrap gap-2 ">
+                    <div className=" border p-2 text-center flex flex-wrap gap-4 flex-col ">
+                      <div className="flex gap-2">
                       <Button
                         onClick={() => handleCopy(link.shortUrl, link.id)}
                         variant={"outline"}
@@ -79,16 +88,27 @@ const { handleCopy, copiedId } = useCopyText();
                         variant={"outline"}
                         className="cursor-pointer"
                       >
-                       <Pencil />
+                        <Pencil />
                       </Button>
+                      </div>
+                        <div  className="flex gap-2">
                       <Button
                         onClick={() => handleDeleteUrl(link.id)}
                         variant={"outline"}
                         className="cursor-pointer"
                       >
-                   <Trash2 />
+                        <Trash2 />
                       </Button>
+                      <Button
+                        onClick={() => setQrLink(link.shortUrl)}
+                        variant={"outline"}
+                        className="cursor-pointer"
+                      >
+                       <QrCode />
+                      </Button>
+                      </div>
                     </div>
+                  { QrLink === link.shortUrl &&  <QrCodeC open={!!QrLink} onOpenChange={() =>{ setQrLink("")}} shortUrl={link.shortUrl} />}
                   </React.Fragment>
                 );
               })}
@@ -96,8 +116,9 @@ const { handleCopy, copiedId } = useCopyText();
           )}
         </CardContent>
       </Card>
+   
     </div>
-  )
+  );
 }
 
-export default LinksTable
+export default LinksTable;

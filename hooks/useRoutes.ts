@@ -14,12 +14,7 @@ const ROUTES_INFO = [
     pathName: "/links",
     icon: Link2,
   },
-  {
-    label: "QR Codes",
-    title: "QR code management",
-    pathName: "/qr",
-    icon: QrCode,
-  },
+
   {
     label: "Link In bio",
     title: "Link in Bio management",

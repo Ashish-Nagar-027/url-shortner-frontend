@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { registerSchema } from "../validation/auth.schema";
 import { authApi } from "../api/auth.api";
+import { AxiosError } from "axios";
 
 
 
@@ -37,30 +38,21 @@ export default function Signup() {
       return;
     }
     try {
-      // const res = await fetch("http://localhost:8080/api/v1/auth/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(parse.data),
-      // });
-      const res = await authApi.register(parse.data)
 
-      const data = await res.data
-      if (!res.ok) {
-        const message = data?.message || "Something Went Wrong";
-        throw new Error(message);
-      }
+      await authApi.register(parse.data)
 
       setFormData(defaultFormValues);
+      setErrMessage("")
     } catch (error: unknown) {
-      console.log("error ", error);
-      if (error instanceof Error) {
-        setErrMessage(error.message);
+      let message = "Something went wrong"
+      if (error instanceof AxiosError) {
+       message =  error?.response?.data.message
         toast.error(error.message);
-      }
-    }
+      } 
+      setErrMessage(message);
+      toast.error(message);
   };
+}
 
   return (
     <form onSubmit={handleRegister}>

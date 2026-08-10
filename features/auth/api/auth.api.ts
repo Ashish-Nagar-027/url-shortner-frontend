@@ -18,4 +18,8 @@ export const authApi = {
     const res = await api.get("/user/me");
     return res?.data?.data;
   },
+  resendEmail: async () => {
+    const res = await api.post("/auth/resend-email");
+    return res?.data;
+  },
 };

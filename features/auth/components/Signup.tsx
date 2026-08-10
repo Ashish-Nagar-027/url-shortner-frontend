@@ -9,8 +9,7 @@ import { toast } from "sonner";
 import { registerSchema } from "../validation/auth.schema";
 import { authApi } from "../api/auth.api";
 import { AxiosError } from "axios";
-
-
+import RegisterSuccess from "./RegisterSuccess";
 
 const defaultFormValues = {
   name: "",
@@ -24,6 +23,7 @@ export default function Signup() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errMessage, setErrMessage] = useState("");
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,23 +38,31 @@ export default function Signup() {
       return;
     }
     try {
+      const res = await authApi.register(parse.data);
 
-      await authApi.register(parse.data)
+      if (res.verificationEmailSent) {
+        setIsEmailSent(true);
+        toast.success(
+          "An verification link is sent to your email. Please verify",
+        );
+      }
 
       setFormData(defaultFormValues);
-      setErrMessage("")
+      setErrMessage("");
     } catch (error: unknown) {
-      let message = "Something went wrong"
+      let message = "Something went wrong";
       if (error instanceof AxiosError) {
-       message =  error?.response?.data.message
+        message = error?.response?.data.message;
         toast.error(error.message);
-      } 
+      }
       setErrMessage(message);
       toast.error(message);
+    }
   };
-}
 
-  return (
+  return isEmailSent ? (
+    <RegisterSuccess />
+  ) : (
     <form onSubmit={handleRegister}>
       <div className="flex flex-col gap-6">
         <div className="grid gap-2">

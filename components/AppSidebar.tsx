@@ -17,13 +17,13 @@ import useRoutes from "@/hooks/useRoutes";
 import { LogOut } from "lucide-react";
 import useLogout from "@/features/auth/hooks/useLogout";
 
-const Appsidebar = () => {
+const Appsidebar = ({showNotification} : {showNotification: boolean}) => {
   const { ROUTES_INFO, isCurrentPath } = useRoutes();
   const { logout } = useLogout()
 
   return (
-    <SidebarProvider className="w-fit" open={true}>
-      <Sidebar className=" ">
+    <SidebarProvider className="w-fit " open={true}>
+      <Sidebar className={`${showNotification && "mt-7" }`}>
         <SidebarHeader className="py-4 m-2 mx-4  ">
           <div className="flex items-center justify-between">
             <Link href={"/"} className="text-2xl font-bold ">

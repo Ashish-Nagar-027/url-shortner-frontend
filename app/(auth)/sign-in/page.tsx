@@ -33,11 +33,11 @@ const Register = () => {
       <CardContent>
           <Signin />
       </CardContent>
-      <CardFooter className="flex-col gap-2">
+      {/* <CardFooter className="flex-col gap-2">
         <Button variant="outline" className="w-full">
           Login with Google
         </Button>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
     </div>
   )
